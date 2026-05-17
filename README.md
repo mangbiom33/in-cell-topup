@@ -38,7 +38,7 @@ Edit `.env` dengan data akun kamu:
 
 ```env
 # Digiflazz Configuration
-DIGIFLAZZ_USERNAME=your_username
+DIGIFLAZZ_INCELL=your_in_cell
 DIGIFLAZZ_API_KEY=your_api_key
 
 # Midtrans Configuration
