@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integration Example - IN CELL</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #020617, #0f172a);
+      color: white;
+      padding: 20px;
+    }
+    .container { max-width: 1200px; margin: auto; }
+    h1 { text-align: center; }
+    .section { background: #0f172a; padding: 20px; margin: 20px 0; border-radius: 12px; border: 1px solid #334155; }
+    input, select, button { padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #020617; color: white; }
+    button { background: #2563eb; cursor: pointer; }
+    .success { color: #4ade80; }
+    .error { color: #fca5a5; }
+    .response { background: #020617; padding: 15px; margin-top: 15px; border-radius: 8px; overflow-x: auto; }
+    code { color: #60a5fa; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎮 IN CELL - API Integration Example</h1>
+    
+    <div class="section">
+      <h2>1️⃣ Create Order</h2>
+      <input type="text" id="userId" placeholder="User ID" value="123456">
+      <select id="game">
+        <option>Mobile Legends</option>
+        <option>Free Fire</option>
+        <option>PUBG Mobile</option>
+      </select>
+      <input type="number" id="nominal" placeholder="Nominal" value="10000">
+      <button onclick="createOrder()">Create Order</button>
+      <div id="orderResponse" class="response" style="display:none;"></div>
+    </div>
+
+    <div class="section">
+      <h2>2️⃣ Create Payment</h2>
+      <input type="text" id="paymentOrderId" placeholder="Order ID" value="INV1234567890">
+      <input type="number" id="amount" placeholder="Amount" value="10000">
+      <button onclick="createPayment()">Create Payment</button>
+      <div id="paymentResponse" class="response" style="display:none;"></div>
+    </div>
+
+    <div class="section">
+      <h2>3️⃣ Check Order Status</h2>
+      <input type="text" id="statusOrderId" placeholder="Order ID" value="INV1234567890">
+      <button onclick="checkStatus()">Check Status</button>
+      <div id="statusResponse" class="response" style="display:none;"></div>
+    </div>
+
+    <div class="section">
+      <h2>4️⃣ Check Digiflazz Balance</h2>
+      <button onclick="checkBalance()">Check Balance</button>
+      <div id="balanceResponse" class="response" style="display:none;"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:3000/api';
+
+    async function createOrder() {
+      const userId = document.getElementById('userId').value;
+      const game = document.getElementById('game').value;
+      const nominal = document.getElementById('nominal').value;
+
+      try {
+        const response = await fetch(`${API_BASE}/order/create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, game, nominal })
+        });
+        const data = await response.json();
+        showResponse('orderResponse', data, response.ok);
+      } catch (error) {
+        showResponse('orderResponse', { error: error.message }, false);
+      }
+    }
+
+    async function createPayment() {
+      const order_id = document.getElementById('paymentOrderId').value;
+      const gross_amount = parseInt(document.getElementById('amount').value);
+
+      try {
+        const response = await fetch(`${API_BASE}/payment/create`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ order_id, gross_amount })
+        });
+        const data = await response.json();
+        showResponse('paymentResponse', data, response.ok);
+      } catch (error) {
+        showResponse('paymentResponse', { error: error.message }, false);
+      }
+    }
+
+    async function checkStatus() {
+      const order_id = document.getElementById('statusOrderId').value;
+
+      try {
+        const response = await fetch(`${API_BASE}/order/status/${order_id}`);
+        const data = await response.json();
+        showResponse('statusResponse', data, response.ok);
+      } catch (error) {
+        showResponse('statusResponse', { error: error.message }, false);
+      }
+    }
+
+    async function checkBalance() {
+      try {
+        const response = await fetch(`${API_BASE}/digiflazz/balance`);
+        const data = await response.json();
+        showResponse('balanceResponse', data, response.ok);
+      } catch (error) {
+        showResponse('balanceResponse', { error: error.message }, false);
+      }
+    }
+
+    function showResponse(elementId, data, success) {
+      const element = document.getElementById(elementId);
+      element.style.display = 'block';
+      element.innerHTML = `<span class="${success ? 'success' : 'error'}"><code>${JSON.stringify(data, null, 2)}</code></span>`;
+    }
+  </script>
+</body>
+</html>
