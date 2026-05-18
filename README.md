@@ -102,10 +102,10 @@ Server akan berjalan di `http://localhost:3000`
 curl -X POST http://localhost:3000/api/order/create \
   -H "Content-Type: application/json" \
   -d '{
-    "user_id": "123456",
-    "game": "Mobile Legends",
-    "nominal": "10000",
-    "payment_method": "midtrans"
+    "user_id":
+    "game":
+    "nominal":
+    "payment_method": 
   }'
 ```
 
@@ -115,12 +115,12 @@ curl -X POST http://localhost:3000/api/order/create \
 curl -X POST http://localhost:3000/api/payment/create \
   -H "Content-Type: application/json" \
   -d '{
-    "order_id": "INV1234567890",
-    "gross_amount": 10000,
-    "customer_details": {
-      "first_name": "John",
-      "email": "john@example.com",
-      "phone": "08123456789"
+    "order_id":
+    "gross_amount": 
+    "customer_details": 
+      "first_name":
+      "email": 
+      "phone":
     }
   }'
 ```
@@ -131,9 +131,9 @@ curl -X POST http://localhost:3000/api/payment/create \
 curl -X POST http://localhost:3000/api/digiflazz/transaction \
   -H "Content-Type: application/json" \
   -d '{
-    "buyer_sku_code": "ML100",
-    "customer_no": "123456",
-    "ref_id": "INV1234567890"
+    "buyer_sku_code":
+    "customer_no": 
+    "ref_id":
   }'
 ```
 
